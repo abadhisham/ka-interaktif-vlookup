@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belajar VLOOKUP: Toko Nusantara Mart</title>
+<style>
+:root{--bg:#f6f8f6;--card:#fff;--ink:#1c2b22;--mute:#5b6b61;--line:#cfd8d2;--g:#1d6f42;--gl:#e3f2e9;--hl:#fff0a8;--err:#b3261e;--errl:#fdeceb}
+@media(prefers-color-scheme:dark){:root{--bg:#121a15;--card:#1a251e;--ink:#e6efe9;--mute:#9db0a4;--line:#34473b;--g:#5cc08a;--gl:#1f3a2a;--hl:#5a4d10;--err:#ff8a80;--errl:#3b1f1d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.7rem;margin:.2em 0}h2{font-size:1.25rem;margin:0 0 .5em}
+.sub{color:var(--mute);margin:0 0 20px}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:18px;margin:16px 0}
+code,.f{font-family:Consolas,"Courier New",monospace}
+.f{background:var(--gl);border-left:4px solid var(--g);padding:10px 12px;border-radius:4px;overflow-x:auto;white-space:nowrap}
+.arg{padding:1px 5px;border-radius:3px;font-weight:600}
+.a1{background:#ffd9a8;color:#3a2200}.a2{background:#b9e0ff;color:#002a47}.a3{background:#d7c5ff;color:#27004f}.a4{background:#bff0c9;color:#00381a}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;min-width:100%}
+th,td{border:1px solid var(--line);padding:6px 12px;text-align:left;white-space:nowrap}
+th{background:var(--gl);font-weight:600;text-align:center}
+td.rh{background:var(--gl);text-align:center;font-weight:600}
+td.row{background:var(--hl)}td.hit{background:var(--g);color:#fff;font-weight:700}
+.ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+label{display:block;font-size:.85rem;color:var(--mute);margin-bottom:3px}
+input,select,button{font:inherit;color:var(--ink)}
+input,select{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--card)}
+button{background:var(--g);color:#fff;border:0;border-radius:6px;padding:9px 16px;cursor:pointer;font-weight:600}
+@media(prefers-color-scheme:dark){button{color:#0b1a11}}
+button.alt{background:transparent;color:var(--g);border:1px solid var(--g)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--g);outline-offset:2px}
+.res{margin-top:10px;padding:10px 12px;border-radius:6px;background:var(--gl)}
+.res.bad{background:var(--errl);color:var(--err)}
+.opt{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);margin:8px 0}
+.opt:hover{border-color:var(--g)}
+.opt.ok{background:var(--gl);border-color:var(--g)}.opt.no{background:var(--errl);border-color:var(--err)}
+.fb{margin-top:12px;padding:10px 12px;border-radius:6px}
+.fb.ok{background:var(--gl)}.fb.no{background:var(--errl)}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--g);transition:width .3s}
+.tp{border-left:4px solid var(--g);padding-left:12px;color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<h1>Belajar VLOOKUP</h1>
+<p class="sub">Kasir Toko Nusantara Mart mencari harga barang dari kode barang. Excel bisa melakukannya dalam satu rumus.</p>
+<p class="tp"><b>Tujuan pembelajaran:</b> peserta didik dapat menggunakan fungsi VLOOKUP.</p>
+
+<section>
+<h2>1. Kenali rumusnya</h2>
+<p><code>VLOOKUP</code> mencari sebuah nilai di kolom paling kiri tabel, lalu mengambil data di baris yang sama dari kolom lain.</p>
+<div class="f">=VLOOKUP(<span class="arg a1">nilai_dicari</span>, <span class="arg a2">tabel</span>, <span class="arg a3">nomor_kolom</span>, <span class="arg a4">FALSE</span>)</div>
+<p><span class="arg a1">nilai_dicari</span> apa yang dicari (kode barang).<br>
+<span class="arg a2">tabel</span> area data, kolom pertamanya harus berisi nilai yang dicari.<br>
+<span class="arg a3">nomor_kolom</span> kolom ke berapa (dihitung dari kolom pertama tabel) yang diambil.<br>
+<span class="arg a4">FALSE</span> cocok persis. Pakai ini untuk hampir semua kasus.</p>
+<p style="color:var(--mute);font-size:.9rem">Catatan: Excel dengan pengaturan wilayah Indonesia memakai titik koma (;) sebagai pemisah argumen, bukan koma.</p>
+</section>
+
+<section>
+<h2>2. Coba sendiri</h2>
+<p>Ubah isian di bawah dan lihat rumus serta hasilnya berubah.</p>
+<div class="tw"><table id="tbl"></table></div>
+<div class="ctl">
+<div><label for="kode">Nilai dicari</label><input id="kode" value="A103" autocomplete="off"></div>
+<div><label for="kol">Nomor kolom</label><select id="kol"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></div>
+<div><label for="mode">Pencocokan</label><select id="mode"><option value="FALSE">FALSE (persis)</option><option value="TRUE">TRUE (perkiraan)</option></select></div>
+</div>
+<div class="f" id="rumus"></div>
+<div class="res" id="hasil" aria-live="polite"></div>
+<p style="color:var(--mute);font-size:.9rem">Coba: kode <b>A999</b> (tidak ada), nomor kolom <b>5</b> (di luar tabel), lalu bandingkan FALSE dan TRUE.</p>
+</section>
+
+<section>
+<h2>3. Latihan</h2>
+<div class="bar"><i id="bar" style="width:0"></i></div>
+<div id="quiz"></div>
+</section>
+</main>
+<script>
+const D=[["A101","Beras 5kg",68000,40],["A102","Minyak Goreng 2L",36000,25],["A103","Gula 1kg",17500,60],["A104","Telur 1kg",28000,30],["A105","Kopi Sachet",2500,200]];
+const H=["Kode","Nama","Harga","Stok"],L="ABCD";
+const $=id=>document.getElementById(id);
+function lookup(v,c,m){
+  let r=-1;
+  if(m==="FALSE"){r=D.findIndex(x=>x[0].toLowerCase()===v.toLowerCase())}
+  else{D.forEach((x,i)=>{if(x[0].toLowerCase()<=v.toLowerCase())r=i})}
+  if(r<0)return{err:"#N/A",why:"Nilai tidak ditemukan di kolom pertama tabel."};
+  if(c>4)return{err:"#REF!",why:"Nomor kolom melebihi jumlah kolom tabel (hanya 4 kolom)."};
+  return{r,val:D[r][c-1]};
+}
+function draw(){
+  const v=$("kode").value.trim(),c=+$("kol").value,m=$("mode").value;
+  const o=lookup(v,c,m);
+  let h="<tr><th></th>"+L.split("").map(x=>`<th>${x}</th>`).join("")+"</tr><tr><td class='rh'>1</td>"+H.map(x=>`<td><b>${x}</b></td>`).join("")+"</tr>";
+  D.forEach((row,i)=>{h+=`<tr><td class='rh'>${i+2}</td>`+row.map((x,j)=>{
+    const cls=o.r===i?(j===c-1?"hit":"row"):"";
+    return `<td class="${cls}">${j===2?"Rp "+x.toLocaleString("id-ID"):x}</td>`}).join("")+"</tr>"});
+  $("tbl").innerHTML=h;
+  $("rumus").textContent=`=VLOOKUP("${v}", A2:D6, ${c}, ${m})`;
+  const res=$("hasil");
+  if(o.err){res.className="res bad";res.textContent=`Hasil: ${o.err}. ${o.why}`}
+  else{res.className="res";res.textContent=`Hasil: ${o.val}. Excel menemukan "${D[o.r][0]}" di baris ${o.r+2}, lalu mengambil kolom ke-${c} (${H[c-1]}).`}
+}
+["kode","kol","mode"].forEach(i=>$(i).addEventListener("input",draw));draw();
+
+const Q=[
+{t:"mc",q:"Pada =VLOOKUP(A103, A2:D6, 3, FALSE), apa fungsi angka 3?",o:["Mencari di baris ke-3","Mengambil data dari kolom ke-3 tabel","Mengulang pencarian 3 kali","Mengurutkan 3 data teratas"],a:1,e:"Angka ketiga adalah nomor kolom: kolom ke-3 dihitung dari kolom pertama tabel (Kode=1, Nama=2, Harga=3)."},
+{t:"mc",q:"Kasir ingin mengambil stok barang dari kode A104 dengan tabel A2:D6. Nomor kolom yang benar?",o:["1","2","3","4"],a:3,e:"Stok ada di kolom ke-4 tabel (Kode, Nama, Harga, Stok)."},
+{t:"mc",q:"Apa arti argumen terakhir FALSE?",o:["Hasil boleh salah","Nilai harus cocok persis","Pencarian dari bawah ke atas","Abaikan huruf besar kecil saja"],a:1,e:"FALSE berarti pencocokan persis. Jika tidak ada yang cocok, hasilnya #N/A."},
+{t:"mc",q:"Apa hasil =VLOOKUP(\"A105\", A2:D6, 5, FALSE)?",o:["2500","200","#N/A","#REF!"],a:3,e:"Tabel hanya punya 4 kolom, jadi nomor kolom 5 menghasilkan #REF!. Kode A105 sendiri ada."},
+{t:"f",q:"Tulis rumus untuk mengambil harga (kolom C) dari kode barang di sel F2, dengan tabel A2:D6 dan pencocokan persis.",hint:"Awali dengan tanda =. Koma atau titik koma sama-sama diterima.",e:"Jawaban: =VLOOKUP(F2,A2:D6,3,FALSE). Boleh juga memakai $A$2:$D$6 atau 0 sebagai pengganti FALSE."}
+];
+let i=0,s=0;
+function normOk(t){
+  t=t.replace(/\s+/g,"").replace(/\$/g,"").toUpperCase().replace(/;/g,",");
+  return t==="=VLOOKUP(F2,A2:D6,3,FALSE)"||t==="=VLOOKUP(F2,A2:D6,3,0)";
+}
+function show(){
+  const z=$("quiz");$("bar").style.width=(i/Q.length*100)+"%";
+  if(i>=Q.length){
+    z.innerHTML=`<h3>Skor: ${s} dari ${Q.length}</h3><p>${s===Q.length?"Sempurna. Kamu sudah bisa memakai VLOOKUP.":s>=3?"Bagus. Ulangi bagian yang masih keliru, lalu coba lagi.":"Buka bagian 2, coba beberapa kode dan nomor kolom, lalu ulangi latihan."}</p><button id="re">Ulangi latihan</button>`;
+    $("re").onclick=()=>{i=0;s=0;show()};return;
+  }
+  const q=Q[i];
+  let h=`<p><b>Soal ${i+1} dari ${Q.length}.</b> ${q.q}</p>`;
+  if(q.t==="mc")h+=q.o.map((x,k)=>`<button class="opt" data-k="${k}">${x}</button>`).join("");
+  else h+=`<div class="f" style="padding:0"><input id="ans" placeholder="=VLOOKUP(...)" autocomplete="off" spellcheck="false" style="font-family:Consolas,monospace;border:0;background:transparent"></div><p style="color:var(--mute);font-size:.9rem">${q.hint}</p><button id="cek">Periksa jawaban</button>`;
+  h+=`<div id="fb"></div>`;z.innerHTML=h;
+  if(q.t==="mc")z.querySelectorAll(".opt").forEach(b=>b.onclick=()=>done(+b.dataset.k===q.a,b));
+  else{$("cek").onclick=()=>done(normOk($("ans").value));$("ans").addEventListener("keydown",e=>{if(e.key==="Enter")$("cek").click()})}
+}
+function done(ok,btn){
+  const q=Q[i];
+  if(ok)s++;
+  document.querySelectorAll("#quiz .opt").forEach((b,k)=>{b.disabled=true;if(k===q.a)b.classList.add("ok");else if(b===btn)b.classList.add("no")});
+  if($("cek"))$("cek").disabled=true,$("ans").disabled=true;
+  $("fb").innerHTML=`<div class="fb ${ok?"ok":"no"}"><b>${ok?"Benar.":"Belum tepat."}</b> ${q.e}</div><p><button id="nx">${i===Q.length-1?"Lihat skor":"Soal berikutnya"}</button></p>`;
+  $("nx").focus();$("nx").onclick=()=>{i++;show()};
+}
+show();
+</script>
+</body>
+</html>
